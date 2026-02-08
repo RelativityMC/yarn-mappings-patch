@@ -3,8 +3,11 @@ plugins {
     id "maven-publish"
 }
 
-group = "dev.architectury"
-def runNumber = (System.getenv("GITHUB_RUN_NUMBER") == null ? "9999" : System.getenv("GITHUB_RUN_NUMBER"))
+group = "org.relativitymc"
+
+def ENV = System.getenv()
+def runNumber = ENV.BUILD_NUMBER ?: "local"
+
 def publishingVersions = project.publishing_versions.split(",")
 
 ["neoforge", "forge"].each { loader ->
@@ -18,16 +21,16 @@ def publishingVersions = project.publishing_versions.split(",")
                 rename { "mappings.tiny" }
             }
             archiveExtension = "jar"
-            archivesBaseName = "yarn-mappings-patch-$loader"
+            archiveBaseName = "modern-yarn-mappings-patch-$loader"
             archiveVersion = "$version+build.$runNumber"
-            metadataCharset "UTF-8"
+            metadataCharset = "UTF-8"
             destinationDirectory = base.libsDirectory
         }
         
         publishing {
             publications {
                 create("maven${loader.capitalize()}$version", MavenPublication) {
-                    artifactId = "yarn-mappings-patch-$loader"
+                    artifactId = "modern-yarn-mappings-patch-$loader"
                     it.version = "$version+build.$runNumber"
                     artifact(task)
                 }
@@ -38,12 +41,12 @@ def publishingVersions = project.publishing_versions.split(",")
 
 publishing {
     repositories {
-        if (System.getenv("MAVEN_PASS") != null) {
+        if (ENV.MAVEN_URL) {
             maven {
-                url = "https://deploy.shedaniel.me/"
+                url = ENV.MAVEN_URL
                 credentials {
-                    username = "shedaniel"
-                    password = System.getenv("MAVEN_PASS")
+                    username = ENV.MAVEN_CRED_USR
+                    password = ENV.MAVEN_CRED_PSW
                 }
             }
         }
