@@ -4,4 +4,4 @@ c	net/minecraft/class_329
 c	net/minecraft/class_3495	
 	m	(Z)Lnet/minecraft/class_3495;	method_1_364	replaceVanilla
 c	net/minecraft/class_5483$class_5496
-	m	(Lnet/minecraft/class_1311;)	method_1_8742	getSpawnerVanilla
+	m	(Lnet/minecraft/class_1311;)Lnet/minecraft/class_6012$class_6006;	method_1_8742	getSpawnerVanilla
